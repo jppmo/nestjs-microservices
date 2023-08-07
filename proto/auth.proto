@@ -1,0 +1,47 @@
+syntax = "proto3";
+
+package auth;
+
+service UsersService {
+  rpc CreateUser (CreateUserDto) returns (User) {}
+  rpc FindUser (FindUserDto) returns (User) {}
+  rpc SignInUser (SignInUserDto) returns (AuthUser) {}
+  rpc VerifyToken (VerifyTokenDto) returns (Payload) {}
+}
+
+message Payload {
+  string sub = 1;
+  string username = 2;
+  int32 exp = 3;
+}
+
+message VerifyTokenDto {
+  string token = 1;
+}
+
+message AuthUser {
+  int32 id = 1;
+  string token = 2;
+}
+
+message SignInUserDto {
+  string email = 1;
+  string password = 2;
+}
+
+message CreateUserDto {
+  string username = 1;
+  string email = 2;
+  string password = 3;
+}
+
+message FindUserDto {
+  int32 id = 1;
+}
+
+message User {
+  int32 id = 1;
+  string username = 2;
+  string email = 3;
+  string password = 4;
+}
