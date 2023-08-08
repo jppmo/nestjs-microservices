@@ -11,9 +11,6 @@ export class UsersService {
     @InjectRepository(User) private usersRepository: Repository<User>
   ) {}
 
-  private readonly users: User[] = [];
-
-
   async save(user: CreateUserDto) {
     const newUser = new User();
     newUser.username = user.username;

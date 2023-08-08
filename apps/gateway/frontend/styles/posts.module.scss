@@ -1,0 +1,75 @@
+.search {
+  margin-top: 10%;
+  margin-left: 35%;
+
+  .searchInput {
+    margin-left: 5px;
+    gap: 5px 5px;
+    padding: 8px 8px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+  }
+  .searchIcon {
+    margin-left: 5px;
+  }
+}
+
+.postGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+  padding: 20px 20px;
+  margin-top: 10%;
+
+  .post {
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+    input {
+      margin-bottom: 10px;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+    }
+
+    .postTitle {
+      font-size: 1.2rem;
+      margin-bottom: 10px;
+    }
+
+    .postContent {
+      font-size: 1rem;
+      color: #555;
+    }
+
+    .postAuthor {
+      margin-top: 10px;
+      font-size: 0.7rem;
+      color: #555;
+      float: right;
+    }
+
+    .postDeleteButton {
+      background-color: rgb(165, 163, 163);
+      color: white;
+      border: none;
+      border-radius: 5px;
+      padding: 5px 10px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      float: right;
+      margin: 2px 2px;
+
+      &:hover {
+        background-color: #2b2a2a;
+      }
+
+      svg {
+        font-size: 1rem;
+      }
+    }
+  }
+}

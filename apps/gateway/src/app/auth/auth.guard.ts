@@ -1,6 +1,6 @@
 import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from "@nestjs/common";
 import { AuthService } from "./auth.service";
-import { VerifyTokenDto } from "@nestjs-microservices/shared/types";
+import { AuthResponse, VerifyTokenDto } from "@nestjs-microservices/shared/types";
 
 
 
@@ -10,7 +10,9 @@ export class AuthGuard implements CanActivate {
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
-    const token = this.extractTokenFromHeader(request);
+    const token = this.extractTokenFromHeader(request) || this.extractTokenFromCookie(request);
+
+    
     if (!token) {
       throw new UnauthorizedException();
     }
@@ -20,10 +22,7 @@ export class AuthGuard implements CanActivate {
         token
       };
 
-      console.log("asking auth to verify token");
-      
       const payload = await this.authService.verifyToken(tokenDto);
-      console.log(payload);
       
       // 💡 We're assigning the payload to the request object here
       // so that we can access it in our route handlers
@@ -32,6 +31,11 @@ export class AuthGuard implements CanActivate {
       throw new UnauthorizedException();
     }
     return true;
+  }
+
+  private extractTokenFromCookie(request): string | undefined {
+    const [name, token] = request.headers.cookie?.split('=') ?? [];
+    return name === 'token' ? token : undefined;
   }
 
   private extractTokenFromHeader(request): string | undefined {

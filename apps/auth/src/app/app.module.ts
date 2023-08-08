@@ -5,6 +5,8 @@ import { UsersModule } from './users/users.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './users/entities/user.entity';
 import { JwtModule } from '@nestjs/jwt';
+import { PostsModule } from './posts/posts.module';
+import { Post } from './posts/entities/post.entity';
 
 @Module({
   imports: [
@@ -21,9 +23,10 @@ import { JwtModule } from '@nestjs/jwt';
       username: process.env.POSTGRES_USER,
       password: process.env.POSTGRES_PASSWORD,
       database: process.env.POSTGRES_DATABASE,
-      entities: [User],
+      entities: [User, Post],
       synchronize: true,
     }),
+    PostsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

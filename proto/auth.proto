@@ -5,8 +5,67 @@ package auth;
 service UsersService {
   rpc CreateUser (CreateUserDto) returns (User) {}
   rpc FindUser (FindUserDto) returns (User) {}
-  rpc SignInUser (SignInUserDto) returns (AuthUser) {}
+  rpc SignInUser (SignInUserDto) returns (AuthResponse) {}
   rpc VerifyToken (VerifyTokenDto) returns (Payload) {}
+  rpc CreatePost (CreatePostDto) returns (Post) {}
+  rpc GetPost (GetPostDto) returns (Post) {}
+  rpc GetUserPosts (GetUserPostsDto) returns (PostsUser) {}
+  rpc DeletePost (DeletePostDto) returns (Post) {}
+  rpc UpdatePost (UpdatePostDto) returns (Post) {}
+  rpc GetAllPosts (GetAllPostsDto) returns (PostsAll) {}
+}
+
+message GetAllPostsDto {
+  int32 noArguments = 1;
+}
+
+message PostsAll {
+  repeated Post posts = 1;
+}
+
+message PostsUser {
+  repeated Post posts = 1;
+}
+
+message UpdatePostDto {
+  Post post = 1;
+}
+
+message DeletePostDto {
+  int32 postId = 1;
+}
+
+message GetUserPostsDto {
+  int32 userId = 1;
+}
+
+message Post {
+  int32 id = 1;
+  string title = 2;
+  string content = 3;
+  User user = 4;
+}
+
+message GetPostDto {
+  int32 postId = 1;
+}
+
+message CreatePostDto {
+  string title = 1;
+  string content = 2;
+  int32 userId = 3;
+}
+
+message AuthResponse {
+  oneof response_type {
+    ErrorResponse error = 1;
+    AuthUser authUser = 2;
+  }
+}
+
+message ErrorResponse {
+  int32 code = 1;
+  string message = 2;
 }
 
 message Payload {

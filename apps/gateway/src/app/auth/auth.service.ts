@@ -1,6 +1,6 @@
 import { Inject, Injectable, OnModuleInit } from '@nestjs/common';
 import { ClientGrpc } from '@nestjs/microservices';
-import { CreateUserDto, Payload, USERS_SERVICE_NAME, UsersServiceClient, VerifyTokenDto } from '@nestjs-microservices/shared/types'
+import { AuthResponse, CreateUserDto, Payload, USERS_SERVICE_NAME, UsersServiceClient, VerifyTokenDto } from '@nestjs-microservices/shared/types'
 import { lastValueFrom } from 'rxjs';
 
 @Injectable()
@@ -20,15 +20,15 @@ export class AuthService implements OnModuleInit {
   }
 
   createUser(user: CreateUserDto) {
-    console.log("oi");
-    
     return this.usersService.createUser(user);
   }
 
-  signIn(user: CreateUserDto) {
-    console.log(user);
+  async signIn(user: CreateUserDto) {
+    const resGrpc = this.usersService.signInUser(user);
+    const res: AuthResponse = await lastValueFrom(resGrpc);
+    return res;
 
-    return this.usersService.signInUser(user);
+    // return this.usersService.signInUser(user);
   }
 
   async verifyToken(verifyTokenDto: VerifyTokenDto) {
@@ -36,24 +36,6 @@ export class AuthService implements OnModuleInit {
     const res: Payload = await lastValueFrom(resGrpc);
     return res;
   }
-  // verify token
-  // grpc call to auth verify token return jwt payload
-
-
-  // createUser(user: CreateUserDto) {
-  //   this.authClient.emit('create-user', JSON.stringify(user));
-  // }
-
-  // signIn(user: CreateUserDto) {
-  //   console.log(user);
-    
-  //   const send = this.authClient.send('sign-in', JSON.stringify({ ...user }));
-  //   const res = send.subscribe((response) => {
-  //     console.log(user);
-  //     //return user;
-  //   });
-  //   //return res;
-  // }
 
   
 }

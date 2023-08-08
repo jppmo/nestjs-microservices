@@ -1,6 +1,7 @@
-import { Body, Controller, Post, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Post, Res, ValidationPipe } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CreateUserDto } from '@nestjs-microservices/shared/types';
+import { Response } from 'express';
 
 @Controller('auth')
 export class AuthController {
@@ -12,7 +13,13 @@ export class AuthController {
   }
 
   @Post('sign-in')
-  signIn(@Body(ValidationPipe) user: CreateUserDto) {
+  async signIn(@Body(ValidationPipe) user: CreateUserDto, @Res({ passthrough: true }) response: Response) {
+
+    const res = await this.authService.signIn(user);
+    if(res.authUser) {
+      response.cookie('token', res.authUser.token);
+    }
+    
     return this.authService.signIn(user);
   }
 }
