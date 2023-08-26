@@ -17,7 +17,6 @@ export class AppController {
   @Render('index')
   index() {
     return this.postsService.getAllPosts();
-    // TODO GET ALL POSTS
   }
 
   @Get('/login')

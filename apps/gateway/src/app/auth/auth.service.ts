@@ -27,8 +27,6 @@ export class AuthService implements OnModuleInit {
     const resGrpc = this.usersService.signInUser(user);
     const res: AuthResponse = await lastValueFrom(resGrpc);
     return res;
-
-    // return this.usersService.signInUser(user);
   }
 
   async verifyToken(verifyTokenDto: VerifyTokenDto) {

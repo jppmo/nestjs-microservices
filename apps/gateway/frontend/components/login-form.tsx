@@ -6,6 +6,7 @@ const LoginForm = ({ message }) => {
   const router = useRouter()
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState({ code: 0, message: "" });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -19,9 +20,18 @@ const LoginForm = ({ message }) => {
         body: JSON.stringify({ email, password }),
       });
   
-      if (response.ok) {
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      
+      if(data.error) {
+        setError(data.error);
+      } else {
         router.push('/api');
       }
+
     } catch (error) {
       console.log(error);
     }
@@ -35,6 +45,11 @@ const LoginForm = ({ message }) => {
         <input type="email" id="email" name="email" value={email} onChange={(e) => { setEmail(e.target.value) }} />
         <label htmlFor="password">Password:</label>
         <input type="password" id="password" name="password" value={password} onChange={(e) => { setPassword(e.target.value) }} />
+
+        {error.message && 
+          <label className={styles.errorLabel}>Error: {error.message}</label>
+        }
+
         <button type="submit">Login</button>
       </form>
     </div>
